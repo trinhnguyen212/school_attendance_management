@@ -35,14 +35,15 @@ COPY backend .
 
 # Install Composer dependencies
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-RUN composer install --no-cache --optimize-autoloader --no-dev && \
-    php artisan config:clear && \
-    php artisan event:clear && \
-    php artisan route:clear && \
-    php artisan view:clear && \
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction \
+    --prefer-dist && \
+    php artisan optimize:clear && \
+    php artisan optimize && \
     rm -f storage/logs/laravel.log && \
     rm -rf storage/framework/sessions/* && \
-    php artisan optimize && \
     rm /usr/local/bin/composer
 
 # Copy the built frontend assets to the Laravel public directory
@@ -51,7 +52,7 @@ COPY --from=node-builder /app/dist/index.html /var/www/school-attendance-app/res
 
 # Grant permissions
 RUN chown -R www-data:www-data /var/www/school-attendance-app/storage /var/www/school-attendance-app/bootstrap/cache
-RUN chown -R 775 /var/www/school-attendance-app/storage/logs
+RUN chmod -R 775 /var/www/school-attendance-app/storage/logs
 
 # Handle uploads
 RUN mkdir -p /var/www/school-attendance-app/storage/uploads && \
