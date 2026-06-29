@@ -40,8 +40,8 @@ RUN composer install \
     --optimize-autoloader \
     --no-interaction \
     --prefer-dist && \
-    php artisan optimize:clear && \
-    php artisan optimize && \
+    #php artisan optimize:clear && \
+    #php artisan optimize && \
     rm -f storage/logs/laravel.log && \
     rm -rf storage/framework/sessions/* && \
     rm /usr/local/bin/composer
