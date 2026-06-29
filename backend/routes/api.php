@@ -16,6 +16,16 @@ use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Http\Request;
+
+Route::middleware('auth:sanctum')->get('/debug-user', function (Request $request) {
+    return response()->json([
+        'authenticated' => $request->user() !== null,
+        'user' => $request->user(),
+        'bearer_token' => $request->bearerToken(),
+    ]);
+});
+
 if (!defined('AUTH_MIDDLEWARES')) define('AUTH_MIDDLEWARES', ['auth:sanctum',]);
 
 
