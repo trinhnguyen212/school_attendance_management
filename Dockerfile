@@ -37,11 +37,9 @@ COPY backend .
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 RUN composer install \
     --no-dev \
-    --optimize-autoloader \
     --no-interaction \
-    --prefer-dist && \
-    #php artisan optimize:clear && \
-    #php artisan optimize && \
+    --prefer-source \
+    --optimize-autoloader && \
     rm -f storage/logs/laravel.log && \
     rm -rf storage/framework/sessions/* && \
     rm /usr/local/bin/composer
