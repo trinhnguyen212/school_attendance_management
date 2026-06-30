@@ -53,6 +53,17 @@ Route::get('/debug-auth', function (Request $request) {
     ]);
 });
 
+use Illuminate\Support\Facades\Auth;
+
+Route::middleware('auth:sanctum')->get('/whoami', function (Request $request) {
+    return response()->json([
+        'request_user' => $request->user(),
+        'auth_user' => Auth::user(),
+        'sanctum_user' => Auth::guard('sanctum')->user(),
+        'default_guard' => Auth::getDefaultDriver(),
+    ]);
+});
+
 if (!defined('AUTH_MIDDLEWARES')) define('AUTH_MIDDLEWARES', ['auth:sanctum',]);
 
 

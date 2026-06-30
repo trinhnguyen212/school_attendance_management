@@ -39,13 +39,12 @@ return Application::configure(basePath: dirname(__DIR__))
 
         ]);
 
-        $middleware->group('api', [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            'throttle:api',
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\CamelCaseResponse::class,
-            \App\Http\Middleware\RestrictDemoMode::class,
-        ]);
+$middleware->group('api', [
+    'throttle:api',
+    \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    \App\Http\Middleware\CamelCaseResponse::class,
+    \App\Http\Middleware\RestrictDemoMode::class,
+]);
 
         $middleware->alias([
             'auth' => \App\Http\Middleware\Authenticate::class,
