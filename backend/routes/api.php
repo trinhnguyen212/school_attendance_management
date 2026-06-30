@@ -34,6 +34,16 @@ Route::get('/debug-token', function (Request $request) {
     ]);
 });
 
+use Illuminate\Support\Facades\Auth;
+
+Route::get('/debug-guards', function () {
+    return [
+        'default_guard' => config('auth.defaults.guard'),
+        'guards' => config('auth.guards'),
+        'sanctum_driver' => Auth::guard('sanctum')::class,
+    ];
+});
+
 if (!defined('AUTH_MIDDLEWARES')) define('AUTH_MIDDLEWARES', ['auth:sanctum',]);
 
 
