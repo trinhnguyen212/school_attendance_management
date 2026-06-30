@@ -6,7 +6,7 @@ use App\Observers\PersonalAccessTokenObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Laravel\Sanctum\PersonalAccessToken as SanctumPersonalAccessToken;
 
-// #[ObservedBy(PersonalAccessTokenObserver::class)]
+ #[ObservedBy(PersonalAccessTokenObserver::class)]
 class PersonalAccessToken extends SanctumPersonalAccessToken
 {
     protected $fillable = [
