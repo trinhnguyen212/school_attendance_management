@@ -19,30 +19,25 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 
-Route::get('/debug-token', function (Request $request) {
+
+
+Route::get('/debug-auth', function (Request $request) {
+
     $plain = $request->bearerToken();
 
     $token = $plain
         ? PersonalAccessToken::findToken($plain)
         : null;
 
-    return response()->json([
-        'bearer' => $plain,
-        'found' => $token !== null,
-        'user_id' => $token?->tokenable_id,
-        'type' => $token?->tokenable_type,
-    ]);
-});
-
-
-Route::get('/debug-auth', function (Request $request) {
-    return response()->json([
+    return [
         'authorization' => $request->header('Authorization'),
-        'bearer' => $request->bearerToken(),
+        'bearer' => $plain,
+        'token_found' => $token !== null,
+        'token_id' => $token?->id,
+        'user_from_token' => $token?->tokenable,
         'request_user' => $request->user(),
         'sanctum_user' => auth('sanctum')->user(),
-        'default_user' => auth()->user(),
-    ]);
+    ];
 });
 
 if (!defined('AUTH_MIDDLEWARES')) define('AUTH_MIDDLEWARES', ['auth:sanctum',]);
