@@ -19,18 +19,22 @@ const prefix = 'auth';
 //     }
 // }
 
+import { TOKEN_KEY } from "../config/env";
+
 export async function apiLogin(formData: FormData) {
     try {
         const apiPath = `${prefix}/login`;
-
         const res = await request.post(apiPath, formData);
         const { data } = res.data as ApiResponseWithData<LoginResponse>;
 
+        console.log("TOKEN_KEY:", TOKEN_KEY);
         console.log("TOKEN FROM API:", data.token);
 
         if (data.token) {
             tokenUtils.setToken(data.token);
+
             console.log("TOKEN AFTER SAVE:", tokenUtils.getToken());
+            console.log("LOCAL STORAGE:", localStorage.getItem("token"));
         }
 
         return data;
