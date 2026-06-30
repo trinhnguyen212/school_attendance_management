@@ -53,15 +53,19 @@ request.interceptors.response.use(
         return response;
     },
     function (error: AxiosError) {
-        if (error.response?.status === 401) {
-            if (tokenUtils.getToken()) {
-                tokenUtils.removeToken();
-                const cleanUrl = window.location.href.split('?')[0];
-                window.location.href = cleanUrl;
-                return Promise.reject(error);
-            }
-            return Promise.reject(error);
-        }
+        // if (error.response?.status === 401) {
+        //     if (tokenUtils.getToken()) {
+        //         tokenUtils.removeToken();
+        //         const cleanUrl = window.location.href.split('?')[0];
+        //         window.location.href = cleanUrl;
+        //         return Promise.reject(error);
+        //     }
+        //     return Promise.reject(error);
+        // }
+            if (error.response?.status === 401) {
+        console.log("401 RESPONSE");
+        return Promise.reject(error);
+    }
         if (error.code?.startsWith('ERR_NETWORK')) {
             toast.error(error.message);
             return Promise.reject(error);

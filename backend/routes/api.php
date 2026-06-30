@@ -20,6 +20,12 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 
 
+Route::middleware('auth:sanctum')->get('/debug-user', function (Request $request) {
+    return response()->json([
+        'user' => $request->user(),
+        'token' => $request->user()?->currentAccessToken(),
+    ]);
+});
 
 Route::get('/debug-auth', function (Request $request) {
 
