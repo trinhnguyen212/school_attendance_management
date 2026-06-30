@@ -17,12 +17,20 @@ use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 
-Route::middleware('auth:sanctum')->get('/debug-user', function (Request $request) {
+Route::get('/debug-token', function (Request $request) {
+    $plain = $request->bearerToken();
+
+    $token = $plain
+        ? PersonalAccessToken::findToken($plain)
+        : null;
+
     return response()->json([
-        'authenticated' => $request->user() !== null,
-        'user' => $request->user(),
-        'bearer_token' => $request->bearerToken(),
+        'bearer' => $plain,
+        'found' => $token !== null,
+        'user_id' => $token?->tokenable_id,
+        'type' => $token?->tokenable_type,
     ]);
 });
 
