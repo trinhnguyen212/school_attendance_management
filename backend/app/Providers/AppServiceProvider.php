@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function configSanctum(): void
     {
-        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+       // Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
 
     private function configRoutePattern(): void
