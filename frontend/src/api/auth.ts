@@ -7,12 +7,32 @@ import tokenUtils from '../utils/tokenUtils';
 
 const prefix = 'auth';
 
+// export async function apiLogin(formData: FormData) {
+//     try {
+//         const apiPath = `${prefix}/login`;
+//         const res = await request.post(apiPath, formData);
+//         const { data } = res.data as ApiResponseWithData<LoginResponse>;
+//         if (data.token) tokenUtils.setToken(data.token);
+//         return data;
+//     } catch (error: any) {
+//         return apiUtils.handleError(error);
+//     }
+// }
+
 export async function apiLogin(formData: FormData) {
     try {
         const apiPath = `${prefix}/login`;
+
         const res = await request.post(apiPath, formData);
         const { data } = res.data as ApiResponseWithData<LoginResponse>;
-        if (data.token) tokenUtils.setToken(data.token);
+
+        console.log("TOKEN FROM API:", data.token);
+
+        if (data.token) {
+            tokenUtils.setToken(data.token);
+            console.log("TOKEN AFTER SAVE:", tokenUtils.getToken());
+        }
+
         return data;
     } catch (error: any) {
         return apiUtils.handleError(error);

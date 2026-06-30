@@ -34,14 +34,15 @@ Route::get('/debug-token', function (Request $request) {
     ]);
 });
 
-use Illuminate\Support\Facades\Auth;
 
-Route::get('/debug-guards', function () {
-    return [
-        'default_guard' => config('auth.defaults.guard'),
-        'guards' => config('auth.guards'),
-        'sanctum_driver' => Auth::guard('sanctum')::class,
-    ];
+Route::get('/debug-auth', function (Request $request) {
+    return response()->json([
+        'authorization' => $request->header('Authorization'),
+        'bearer' => $request->bearerToken(),
+        'request_user' => $request->user(),
+        'sanctum_user' => auth('sanctum')->user(),
+        'default_user' => auth()->user(),
+    ]);
 });
 
 if (!defined('AUTH_MIDDLEWARES')) define('AUTH_MIDDLEWARES', ['auth:sanctum',]);
