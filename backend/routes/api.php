@@ -64,6 +64,17 @@ Route::middleware('auth:sanctum')->get('/whoami', function (Request $request) {
     ]);
 });
 
+
+Route::get('/debug-sanctum', function (Request $request) {
+
+    return response()->json([
+        'default_guard' => Auth::getDefaultDriver(),
+        'sanctum_check' => Auth::guard('sanctum')->check(),
+        'sanctum_user' => Auth::guard('sanctum')->user(),
+        'request_user' => $request->user(),
+        'request_user_sanctum' => $request->user('sanctum'),
+    ]);
+});
 if (!defined('AUTH_MIDDLEWARES')) define('AUTH_MIDDLEWARES', ['auth:sanctum',]);
 
 
