@@ -65,6 +65,14 @@ Route::middleware('auth:sanctum')->get('/whoami', function (Request $request) {
 });
 
 
+Route::get('/debug-guards', function () {
+    return response()->json([
+        'defaultGuard' => Auth::getDefaultDriver(),
+        'guards' => config('auth.guards'),
+        'sanctumDriver' => get_class(Auth::guard('sanctum')),
+    ]);
+});
+
 Route::get('/debug-sanctum', function (Request $request) {
 
     return response()->json([
