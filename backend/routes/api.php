@@ -73,6 +73,17 @@ Route::get('/debug-guards', function () {
     ]);
 });
 
+
+Route::get('/debug-request-user', function (Request $request) {
+    return response()->json([
+        'bearer' => $request->bearerToken(),
+        'request_user_web' => $request->user(),
+        'request_user_sanctum' => $request->user('sanctum'),
+        'guard_web' => Auth::guard('web')->user(),
+        'guard_sanctum' => Auth::guard('sanctum')->user(),
+    ]);
+});
+
 Route::get('/debug-sanctum', function (Request $request) {
 
     return response()->json([
