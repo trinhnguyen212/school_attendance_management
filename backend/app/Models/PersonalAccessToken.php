@@ -22,4 +22,12 @@ class PersonalAccessToken extends SanctumPersonalAccessToken
         'token',
         'tokenable_type',
     ];
+
+       protected $casts = [
+        'abilities' => 'json',
+        'last_used_at' => 'datetime',
+        'expires_at' => 'datetime',
+    ];
+
+
 }
