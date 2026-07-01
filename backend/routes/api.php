@@ -94,6 +94,16 @@ Route::get('/debug-sanctum', function (Request $request) {
         'request_user_sanctum' => $request->user('sanctum'),
     ]);
 });
+
+
+Route::get('/debug-app-key', function () {
+    return response()->json([
+        'hasKey' => !empty(config('app.key')),
+        'keyLength' => strlen(config('app.key') ?? ''),
+        'appEnv' => config('app.env'),
+    ]);
+});
+
 if (!defined('AUTH_MIDDLEWARES')) define('AUTH_MIDDLEWARES', ['auth:sanctum',]);
 
 
