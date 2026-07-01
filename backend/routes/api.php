@@ -33,8 +33,7 @@ Route::middleware('auth:sanctum')->get('/debug-user', function (Request $request
 
 
 
-Route::get('/debug-auth', function (Request $request) {
-
+Route::get('/debug-auth-full', function (Request $request) {
     $plain = $request->bearerToken();
 
     $token = $plain
@@ -42,20 +41,13 @@ Route::get('/debug-auth', function (Request $request) {
         : null;
 
     return response()->json([
-        'bearerExists' => $plain !== null,
-        'bearerPrefix' => $plain ? substr($plain, 0, 15) : null,
-
+        'bearer' => $plain,
         'tokenFound' => $token !== null,
-
-        'tokenId' => $token?->id,
-
-        'tokenableType' => $token?->tokenable_type,
-
-        'tokenableId' => $token?->tokenable_id,
-
-        'tokenableExists' => $token?->tokenable !== null,
-
-        'userEmail' => $token?->tokenable?->email,
+        'tokenModel' => $token ? get_class($token) : null,
+        'tokenable' => $token?->tokenable?->email,
+        'sanctumCheck' => Auth::guard('sanctum')->check(),
+        'sanctumUser' => Auth::guard('sanctum')->user(),
+        'requestUser' => $request->user('sanctum'),
     ]);
 });
 
