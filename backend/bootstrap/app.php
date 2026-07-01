@@ -12,10 +12,28 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Sanctum
+        |--------------------------------------------------------------------------
+        */
+        $middleware->statefulApi();
+
+        /*
+        |--------------------------------------------------------------------------
+        | CSRF
+        |--------------------------------------------------------------------------
+        */
         $middleware->validateCsrfTokens(except: [
             '*',
         ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Global Middleware
+        |--------------------------------------------------------------------------
+        */
         $middleware->use([
             // \Illuminate\Http\Middleware\TrustHosts::class,
             \Illuminate\Http\Middleware\TrustProxies::class,
@@ -27,6 +45,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\Locale::class,
         ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Web Middleware
+        |--------------------------------------------------------------------------
+        */
         $middleware->group('web', [
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -36,21 +59,29 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\WebHeaders::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
-
         ]);
 
-$middleware->group('api', [
-    'throttle:api',
-    \Illuminate\Routing\Middleware\SubstituteBindings::class,
-    \App\Http\Middleware\CamelCaseResponse::class,
-    \App\Http\Middleware\RestrictDemoMode::class,
-]);
+        /*
+        |--------------------------------------------------------------------------
+        | API Middleware
+        |--------------------------------------------------------------------------
+        */
+        $middleware->appendToGroup('api', [
+            \App\Http\Middleware\CamelCaseResponse::class,
+            \App\Http\Middleware\RestrictDemoMode::class,
+        ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Middleware Aliases
+        |--------------------------------------------------------------------------
+        */
         $middleware->alias([
             'auth' => \App\Http\Middleware\Authenticate::class,
-            'validate-token' => \App\Http\Middleware\ValidateToken::class
+            'validate-token' => \App\Http\Middleware\ValidateToken::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->create();
