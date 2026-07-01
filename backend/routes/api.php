@@ -59,7 +59,6 @@ Route::get('/debug-auth', function (Request $request) {
     ]);
 });
 
-use Illuminate\Support\Facades\Auth;
 
 Route::middleware('auth:sanctum')->get('/whoami', function (Request $request) {
     return response()->json([
