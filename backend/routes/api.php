@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/debug-user', function (Request $request
 });
 
 
+
 Route::get('/debug-auth', function (Request $request) {
 
     $plain = $request->bearerToken();
@@ -36,20 +37,21 @@ Route::get('/debug-auth', function (Request $request) {
         ? PersonalAccessToken::findToken($plain)
         : null;
 
-    if (!$token) {
-        return response()->json([
-            'tokenFound' => false,
-            'bearer' => $plain,
-        ]);
-    }
-
     return response()->json([
-        'tokenFound' => true,
-        'tokenId' => $token->id,
-        'tokenableType' => $token->tokenable_type,
-        'tokenableId' => $token->tokenable_id,
-        'userExists' => $token->tokenable !== null,
-        'userEmail' => $token->tokenable?->email,
+        'bearerExists' => $plain !== null,
+        'bearerPrefix' => $plain ? substr($plain, 0, 15) : null,
+
+        'tokenFound' => $token !== null,
+
+        'tokenId' => $token?->id,
+
+        'tokenableType' => $token?->tokenable_type,
+
+        'tokenableId' => $token?->tokenable_id,
+
+        'tokenableExists' => $token?->tokenable !== null,
+
+        'userEmail' => $token?->tokenable?->email,
     ]);
 });
 
@@ -96,13 +98,6 @@ Route::get('/debug-sanctum', function (Request $request) {
 });
 
 
-Route::get('/debug-app-key', function () {
-    return response()->json([
-        'hasKey' => !empty(config('app.key')),
-        'keyLength' => strlen(config('app.key') ?? ''),
-        'appEnv' => config('app.env'),
-    ]);
-});
 
 if (!defined('AUTH_MIDDLEWARES')) define('AUTH_MIDDLEWARES', ['auth:sanctum',]);
 
