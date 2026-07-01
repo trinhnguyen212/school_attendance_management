@@ -31,6 +31,19 @@ Route::middleware('auth:sanctum')->get('/debug-user', function (Request $request
     ]);
 });
 
+
+Route::get('/debug-auth-manager', function (Request $request) {
+
+    $guard = Auth::guard('sanctum');
+
+    return response()->json([
+        'guardClass' => get_class($guard),
+        'defaultDriver' => Auth::getDefaultDriver(),
+        'check' => $guard->check(),
+        'user' => $guard->user(),
+    ]);
+});
+
 use Laravel\Sanctum\Sanctum;
 
 Route::get('/debug-model', function () {
