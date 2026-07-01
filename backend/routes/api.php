@@ -20,10 +20,14 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 
 
+use Illuminate\Support\Facades\Auth;
+
 Route::middleware('auth:sanctum')->get('/debug-user', function (Request $request) {
     return response()->json([
-        'user' => $request->user(),
-        'token' => $request->user()?->currentAccessToken(),
+        'request_user' => $request->user(),
+        'auth_user' => Auth::user(),
+        'sanctum_user' => Auth::guard('sanctum')->user(),
+        'current_token' => $request->user()?->currentAccessToken(),
     ]);
 });
 
