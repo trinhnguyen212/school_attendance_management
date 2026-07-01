@@ -31,6 +31,13 @@ Route::middleware('auth:sanctum')->get('/debug-user', function (Request $request
     ]);
 });
 
+use Laravel\Sanctum\Sanctum;
+
+Route::get('/debug-model', function () {
+    return response()->json([
+        'configured_model' => Sanctum::$personalAccessTokenModel,
+    ]);
+});
 
 
 Route::get('/debug-auth-full', function (Request $request) {
