@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('role_permissions', function (Blueprint $table) {
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('permission_id');
-            $table->datetimes();
+            $table->timestamps();
 
-            $table->unique(['role_id', 'permission_id']);
+            $table->primary(['role_id', 'permission_id']);
             $table->foreign('role_id')->references('id')->on('roles')->cascadeOnDelete();
             $table->foreign('permission_id')->references('id')->on('permissions')->cascadeOnDelete();
         });
